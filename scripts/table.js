@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
         row.appendChild(levelCell);
 
         const xpCell = document.createElement("td");
-        xpCell.textContent = xp;
+        xpCell.textContent = xp.toLocaleString();
         row.appendChild(xpCell);
 
         const totalXpCell = document.createElement("td");
-        totalXpCell.textContent = totalXP;
+        totalXpCell.textContent = totalXP.toLocaleString();
         row.appendChild(totalXpCell);
 
         bodyTable.appendChild(row);
