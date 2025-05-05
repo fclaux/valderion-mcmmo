@@ -1,12 +1,3 @@
-export function getXPForLevel(level) {
-    const multiplier = 0.1;
-    const exponent = 1.8;
-    const base = 2000;
-
-    //TODO : à refaire c'est pas la bonne formule
-    return Math.floor(multiplier * Math.pow(level, exponent) + base);
-};
-
 export const levelXPMap = new Map([
     [0, 20022],
     [1, 20138],
@@ -109,5 +100,9 @@ export const levelXPMap = new Map([
     [98, 264667],
     [99, 269155],
 ]);
+
+export function getXPForLevel(level) {
+    return levelXPMap.get(level) || 0;
+};
 
 
