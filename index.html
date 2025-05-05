@@ -17,6 +17,7 @@
                         alt="logo Valdérion"
                         class="logo-small"
                 /></a>
+                <p>MCMMO</p>
             </div>
 
             <nav class="navbar">
@@ -43,12 +44,13 @@
                 <label for="target-level">Niveau cible :</label>
                 <input type="number" id="target-level" min="1" max="100" />
 
+                <p class="form-error" id="error-label">Erreur</p>
                 <button id="calculate-btn">Calculer</button>
             </section>
 
             <section id="result-section">
                 <h2>Résultat</h2>
-                <p id="xp-needed">Veuillez remplir le formulaire ci-dessus.</p>
+                <p id="xp-needed"></p>
                 <div id="blocks-list"></div>
             </section>
         </main>

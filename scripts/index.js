@@ -21,6 +21,9 @@ function initializeOptions() {
 };
 
 function handleFormSubmit() {
+    const errorLabel = document.getElementById("error-label");
+    const responseText = document.getElementById("xp-needed");
+
     const currentLevelInput = document.getElementById("current-level");
     const currentXpInput = document.getElementById("current-xp");
     const targetLevelInput = document.getElementById("target-level");
@@ -35,10 +38,11 @@ function handleFormSubmit() {
         return;
     }
 
-    //Ttraitement des données
+    errorLabel.style.display = "none";
+
     const XP = calculateXP(currentLevel, currentXp, targetLevel);
 
-    alert(`You need ${XP} XP to reach level ${targetLevel}.`);
+    responseText.textContent = `Vous avez besoin de ${XP} XP pour atteindre le niveau ${targetLevel}.`;
 }
 
 function calculateXP(currentLevel, currentXp, targetLevel) {
@@ -54,29 +58,35 @@ function calculateXP(currentLevel, currentXp, targetLevel) {
 }
 
 function verifyForm(currentLevel, currentXp, targetLevel) {
+    const errorLabel = document.getElementById("error-label");
 
     if (isNaN(currentLevel) || isNaN(currentXp) || isNaN(targetLevel)) {
-        alert("Please enter valid numbers for level and XP.");
+        errorLabel.textContent = "Veuillez entrer des nombres valides pour les niveaux et l'XP.";
+        errorLabel.style.display = "block";
         return false;
     }
 
     if (currentLevel < 0 || currentXp < 0 || targetLevel < 0) {
-        alert("Level and XP must be non-negative.");
+        errorLabel.textContent = "Les niveaux et l'XP doivent être non négatifs.";
+        errorLabel.style.display = "block";
         return false;
     }
 
     if (currentLevel >= targetLevel) {
-        alert("Current level cannot be greater than or equals target level.");
+        errorLabel.textContent = "Le niveau actuel ne peut pas être supérieur ou égal au niveau cible.";
+        errorLabel.style.display = "block";
         return false;
     }
 
     if (currentLevel > 100 || targetLevel > 100) {
-        alert("Level cannot exceed 100.");
+        errorLabel.textContent = "Le niveau ne peut pas dépasser 100.";
+        errorLabel.style.display = "block";
         return false;
     }
 
     if (currentXp >= getXPForLevel(currentLevel)) {
-        alert("Current XP cannot exceed or be euaqls the XP required for the current level." + getXPForLevel(currentLevel));
+        errorLabel.textContent = "L'XP actuel ne peut pas dépasser ou être égal à l'XP requis pour le niveau actuel.";
+        errorLabel.style.display = "block";
         return false;
     }
 
