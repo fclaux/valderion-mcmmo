@@ -18,7 +18,7 @@ function initializeOptions() {
         option.textContent = skills[skillKey].frenchName;
         skillSelect.appendChild(option);
     }
-};
+}
 
 function handleFormSubmit() {
     const errorLabel = document.getElementById("error-label");
@@ -38,11 +38,29 @@ function handleFormSubmit() {
         return;
     }
 
-    errorLabel.style.display = "none";
+    errorLabel.classList.remove("visible");
 
     const XP = calculateXP(currentLevel, currentXp, targetLevel);
 
-    responseText.textContent = `Vous avez besoin de ${XP} XP pour atteindre le niveau ${targetLevel}.`;
+    responseText.textContent = "";
+
+    responseText.appendChild(document.createTextNode("Vous avez besoin de "));
+
+    const spanXP = document.createElement("span");
+    spanXP.textContent = XP.toLocaleString() + " XP";
+    spanXP.classList.add("highlight-xp");
+    responseText.appendChild(spanXP);
+
+    responseText.appendChild(
+        document.createTextNode(" pour atteindre le niveau ")
+    );
+
+    const spanLevel = document.createElement("span");
+    spanLevel.textContent = targetLevel;
+    spanLevel.classList.add("highlight-level");
+    responseText.appendChild(spanLevel);
+
+    responseText.appendChild(document.createTextNode("."));
 }
 
 function calculateXP(currentLevel, currentXp, targetLevel) {
@@ -61,32 +79,36 @@ function verifyForm(currentLevel, currentXp, targetLevel) {
     const errorLabel = document.getElementById("error-label");
 
     if (isNaN(currentLevel) || isNaN(currentXp) || isNaN(targetLevel)) {
-        errorLabel.textContent = "Veuillez entrer des nombres valides pour les niveaux et l'XP.";
-        errorLabel.style.display = "block";
+        errorLabel.textContent =
+            "Veuillez entrer des nombres valides pour les niveaux et l'XP.";
+        errorLabel.classList.add("visible");
         return false;
     }
 
     if (currentLevel < 0 || currentXp < 0 || targetLevel < 0) {
-        errorLabel.textContent = "Les niveaux et l'XP doivent être non négatifs.";
-        errorLabel.style.display = "block";
+        errorLabel.textContent =
+            "Les niveaux et l'XP doivent être non négatifs.";
+        errorLabel.classList.add("visible");
         return false;
     }
 
     if (currentLevel >= targetLevel) {
-        errorLabel.textContent = "Le niveau actuel ne peut pas être supérieur ou égal au niveau cible.";
-        errorLabel.style.display = "block";
+        errorLabel.textContent =
+            "Le niveau actuel ne peut pas être supérieur ou égal au niveau cible.";
+        errorLabel.classList.add("visible");
         return false;
     }
 
     if (currentLevel > 100 || targetLevel > 100) {
         errorLabel.textContent = "Le niveau ne peut pas dépasser 100.";
-        errorLabel.style.display = "block";
+        errorLabel.classList.add("visible");
         return false;
     }
 
     if (currentXp >= getXPForLevel(currentLevel)) {
-        errorLabel.textContent = "L'XP actuel ne peut pas dépasser ou être égal à l'XP requis pour le niveau actuel.";
-        errorLabel.style.display = "block";
+        errorLabel.textContent =
+            "L'XP actuel ne peut pas dépasser ou être égal à l'XP requis pour le niveau actuel.";
+        errorLabel.classList.add("visible");
         return false;
     }
 

@@ -76,8 +76,8 @@ header {
     list-style: none;
     font-size: 1.5rem;
     padding: 12px 24px;
-    background: #f0e6dc; /* ton clair moderne */
-    color: #2e1f13;       /* texte foncé pour contraste */
+    background: #f0e6dc;
+    color: #2e1f13;
     border-radius: 12px;
     font-weight: 600;
     transition: all 0.25s ease;
@@ -86,7 +86,7 @@ header {
 }
 
 .navbar ul li a {
-    color: #2e1f13; /* texte foncé pour contraste */
+    color: #2e1f13;
     font-weight: 600;
     transition: all 0.25s ease;
     letter-spacing: 2px;
@@ -106,9 +106,6 @@ header {
     height: 30px;
     margin-right: 10px;
 }
-
-
-
 
 
 /* Main container */
