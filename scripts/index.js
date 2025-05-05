@@ -35,8 +35,22 @@ function handleFormSubmit() {
         return;
     }
 
-    
+    //Ttraitement des données
+    const XP = calculateXP(currentLevel, currentXp, targetLevel);
 
+    alert(`You need ${XP} XP to reach level ${targetLevel}.`);
+}
+
+function calculateXP(currentLevel, currentXp, targetLevel) {
+    let totalXP = 0;
+
+    for (let level = currentLevel + 1; level < targetLevel; level++) {
+        totalXP += getXPForLevel(level);
+    }
+
+    totalXP += getXPForLevel(currentLevel) - currentXp;
+
+    return totalXP;
 }
 
 function verifyForm(currentLevel, currentXp, targetLevel) {
@@ -62,7 +76,7 @@ function verifyForm(currentLevel, currentXp, targetLevel) {
     }
 
     if (currentXp >= getXPForLevel(currentLevel)) {
-        alert("Current XP cannot exceed or be euaqls the XP required for the current level.");
+        alert("Current XP cannot exceed or be euaqls the XP required for the current level." + getXPForLevel(currentLevel));
         return false;
     }
 

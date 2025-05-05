@@ -1,0 +1,39 @@
+/* Table */
+
+#xpTable {
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #f0e6dc; /* fond clair */
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: sans-serif;
+    color: #2e1f13;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#xpTable thead {
+    background-color: #2e1f13; /* légèrement plus foncé */
+    color: #f0e6dc; /* texte clair pour contraste */
+}
+
+#xpTable th, #xpTable td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #a48c6b; /* bordures internes foncées */
+}
+
+#xpTable th {
+    font-size: 1.1rem;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#xpTable tbody td {
+    text-align: right; /* alignement à droite pour les lignes du tbody */
+}
+
+#xpTable tbody td:hover {
+    background-color: #e9dac5; /* survol doux */
+    transition: background 0.2s ease;
+}
