@@ -22,8 +22,8 @@ function initializeOptions() {
 
 function handleFormSubmit() {
     const errorLabel = document.getElementById("error-label");
-    const responseText = document.getElementById("xp-needed");
 
+    const skillSelect = document.getElementById("skill");
     const currentLevelInput = document.getElementById("current-level");
     const currentXpInput = document.getElementById("current-xp");
     const targetLevelInput = document.getElementById("target-level");
@@ -42,25 +42,9 @@ function handleFormSubmit() {
 
     const XP = calculateXP(currentLevel, currentXp, targetLevel);
 
-    responseText.textContent = "";
-
-    responseText.appendChild(document.createTextNode("Vous avez besoin de "));
-
-    const spanXP = document.createElement("span");
-    spanXP.textContent = XP.toLocaleString() + " XP";
-    spanXP.classList.add("highlight-xp");
-    responseText.appendChild(spanXP);
-
-    responseText.appendChild(
-        document.createTextNode(" pour atteindre le niveau ")
-    );
-
-    const spanLevel = document.createElement("span");
-    spanLevel.textContent = targetLevel;
-    spanLevel.classList.add("highlight-level");
-    responseText.appendChild(spanLevel);
-
-    responseText.appendChild(document.createTextNode("."));
+    modifyResponseText(XP, targetLevel);
+    
+    calculateActions(skillSelect.value, XP);
 }
 
 function calculateXP(currentLevel, currentXp, targetLevel) {
@@ -113,4 +97,75 @@ function verifyForm(currentLevel, currentXp, targetLevel) {
     }
 
     return true;
+}
+
+function modifyResponseText(xpNeeded, targetLevel) {
+    const responseText = document.getElementById("xp-needed");
+    responseText.textContent = "";
+
+    responseText.appendChild(document.createTextNode("Vous avez besoin de "));
+
+    const spanXP = document.createElement("span");
+    spanXP.textContent = xpNeeded.toLocaleString() + " XP";
+    spanXP.classList.add("highlight-xp");
+    responseText.appendChild(spanXP);
+
+    responseText.appendChild(
+        document.createTextNode(" pour atteindre le niveau ")
+    );
+
+    const spanLevel = document.createElement("span");
+    spanLevel.textContent = targetLevel;
+    spanLevel.classList.add("highlight-level");
+    responseText.appendChild(spanLevel);
+
+    responseText.appendChild(document.createTextNode("."));
+}
+
+function calculateActions(skillKey, xpNeeded) {
+    const actionsList = skills[skillKey].actions;
+    const actionsContainer = document.getElementById("actions-needed");
+
+    actionsContainer.innerHTML = "";
+
+    for (const actionKey in actionsList) {
+        const action = actionsList[actionKey];
+        const actionsCount = Math.ceil(xpNeeded / action.xp);
+
+        const actionElement = document.createElement("div");
+        actionElement.classList.add("action-item");
+
+        const actionImage = document.createElement("img");
+        const externalImageUrl = `https://minecraft-api.vercel.app/images/items/${actionKey.toLocaleLowerCase().replaceAll(" ", "_")}.png`;
+        const localImageUrl = action.image;
+        const fallbackImageUrl = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
+
+        actionImage.src = externalImageUrl;
+
+        actionImage.onerror = () => {
+            actionImage.src = localImageUrl;
+            actionImage.onerror = () => {
+            actionImage.src = fallbackImageUrl;
+            };
+        };
+        actionImage.alt = actionKey;
+        actionImage.classList.add("action-image");
+        actionImage.width = 32;
+        actionImage.height = 32;
+        console.log(actionKey);
+        
+        const actionName = document.createElement("span");
+        actionName.textContent = actionKey.replaceAll("_", " ");
+        actionName.classList.add("action-name");
+
+        const actionCount = document.createElement("span");
+        actionCount.textContent = `${actionsCount.toLocaleString()}`;
+        actionCount.classList.add("action-count");
+
+        actionElement.appendChild(actionImage);
+        actionElement.appendChild(actionName);
+        actionElement.appendChild(actionCount);
+
+        actionsContainer.appendChild(actionElement);
+    }
 }
