@@ -3,7 +3,7 @@
     color: #2e1f13;
     min-width: 400px;
     max-width: 400px;
-    margin: 40px auto;
+    margin: 20px auto 0;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -35,6 +35,23 @@
     outline: none;
 }
 
+.form-error {
+    display: none;
+    color: #a94442;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+    line-height: 1.5;
+}
+
+.form-error.visible {
+    display: block;
+}
+
 #calculate-btn {
     padding: 12px;
     font-size: 1rem;
@@ -50,6 +67,8 @@
 #calculate-btn:hover {
     background-color: #e3b95c;
 }
+
+/* results */
 
 #result-section {
     max-width: 600px;
@@ -70,21 +89,15 @@
     text-align: center;
 }
 
-.form-error {
-    display: none; /* masqué par défaut */
-    color: #a94442;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 0.95rem;
-    transition: visibility 0.2s ease, opacity 0.2s ease;
-    line-height: 1.5;
+#result-section p {
+    font-size: 1.2rem;
+    text-align: center;
 }
 
-/* classe à ajouter dynamiquement si erreur détectée */
-.form-error.visible {
-    display: block;
+.highlight-xp, .highlight-level {
+    font-weight: bold;
+    color: #a36b32;
 }
+
+
 
