@@ -155,6 +155,7 @@ function calculateActions(skillKey, xpNeeded) {
         actionImage.classList.add("action-image");
         actionImage.width = 32;
         actionImage.height = 32;
+        actionImage.style.objectFit = "contain";
 
         const actionName = document.createElement("span");
         actionName.textContent = actionKey.replaceAll("_", " ");
