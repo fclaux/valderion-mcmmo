@@ -122,21 +122,55 @@ function modifyResponseText(xpNeeded, targetLevel) {
     responseText.appendChild(document.createTextNode("."));
 }
 
+let currentActions = []; // Liste des actions calculées (globale)
+
 function calculateActions(skillKey, xpNeeded) {
     const actionsList = skills[skillKey].actions;
-    const actionsContainer = document.getElementById("actions-needed");
-
-    actionsContainer.innerHTML = "";
+    currentActions = []; // Reset la liste
 
     for (const actionKey in actionsList) {
         const action = actionsList[actionKey];
         const actionsCount = Math.ceil(xpNeeded / action.xp);
 
+        currentActions.push({
+            name: actionKey,
+            count: actionsCount,
+            image: action.image,
+        });
+    }
+
+    renderActions(currentActions);
+}
+
+
+function renderActions(actionArray) {
+    const actionsContainer = document.getElementById("actions-needed");
+    actionsContainer.innerHTML = "";
+
+    // Création du conteneur de boutons
+    const sortButtons = document.createElement("div");
+    sortButtons.id = "sort-buttons";
+
+    const buttonName = document.createElement("button");
+    buttonName.textContent = "Trier par nom";
+    buttonName.onclick = () => sortActions("name");
+
+    const buttonCount = document.createElement("button");
+    buttonCount.textContent = "Trier par nombre";
+    buttonCount.onclick = () => sortActions("count");
+
+    sortButtons.appendChild(buttonName);
+    sortButtons.appendChild(buttonCount);
+
+    actionsContainer.appendChild(sortButtons);
+
+    // Affichage des actions
+    for (const action of actionArray) {
         const actionElement = document.createElement("div");
         actionElement.classList.add("action-item");
 
         const actionImage = document.createElement("img");
-        const baseName = actionKey.toLowerCase().replaceAll(" ", "_");
+        const baseName = action.name.toLowerCase().replaceAll(" ", "_");
 
         const imageSources = [
             action.image,
@@ -146,23 +180,18 @@ function calculateActions(skillKey, xpNeeded) {
             `https://minecraft-api.vercel.app/images/items/${baseName}.gif`,
         ];
 
-        const fallbackImage =
-            "assets/images/fallback.png";
-
+        const fallbackImage = "assets/images/fallback.png";
         loadImage(actionImage, imageSources, fallbackImage);
 
-        actionImage.alt = actionKey;
+        actionImage.alt = action.name;
         actionImage.classList.add("action-image");
-        actionImage.width = 32;
-        actionImage.height = 32;
-        actionImage.style.objectFit = "contain";
 
         const actionName = document.createElement("span");
-        actionName.textContent = actionKey.replaceAll("_", " ");
+        actionName.textContent = action.name.replaceAll("_", " ");
         actionName.classList.add("action-name");
 
         const actionCount = document.createElement("span");
-        actionCount.textContent = `${actionsCount.toLocaleString()}`;
+        actionCount.textContent = `${action.count.toLocaleString()}`;
         actionCount.classList.add("action-count");
 
         actionElement.appendChild(actionImage);
@@ -172,6 +201,20 @@ function calculateActions(skillKey, xpNeeded) {
         actionsContainer.appendChild(actionElement);
     }
 }
+
+function sortActions(criterion) {
+    const sorted = [...currentActions];
+
+    if (criterion === "name") {
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (criterion === "count") {
+        sorted.sort((a, b) => a.count - b.count);
+    }
+
+    renderActions(sorted);
+}
+
+
 
 function loadImage(imageElement, sources, fallback) {
     const tryNext = (index) => {
