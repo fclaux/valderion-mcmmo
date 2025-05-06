@@ -43,7 +43,7 @@ function handleFormSubmit() {
     const XP = calculateXP(currentLevel, currentXp, targetLevel);
 
     modifyResponseText(XP, targetLevel);
-    
+
     calculateActions(skillSelect.value, XP);
 }
 
@@ -136,24 +136,26 @@ function calculateActions(skillKey, xpNeeded) {
         actionElement.classList.add("action-item");
 
         const actionImage = document.createElement("img");
-        const externalImageUrl = `https://minecraft-api.vercel.app/images/items/${actionKey.toLocaleLowerCase().replaceAll(" ", "_")}.png`;
-        const localImageUrl = action.image;
-        const fallbackImageUrl = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
+        const baseName = actionKey.toLowerCase().replaceAll(" ", "_");
 
-        actionImage.src = externalImageUrl;
+        const imageSources = [
+            action.image,
+            `assets/images/blocs_items/${baseName}.png`,
+            `assets/images/blocs_items/${baseName}.gif`,
+            `https://minecraft-api.vercel.app/images/items/${baseName}.png`,
+            `https://minecraft-api.vercel.app/images/items/${baseName}.gif`,
+        ];
 
-        actionImage.onerror = () => {
-            actionImage.src = localImageUrl;
-            actionImage.onerror = () => {
-            actionImage.src = fallbackImageUrl;
-            };
-        };
+        const fallbackImage =
+            "assets/images/fallback.png";
+
+        loadImage(actionImage, imageSources, fallbackImage);
+
         actionImage.alt = actionKey;
         actionImage.classList.add("action-image");
         actionImage.width = 32;
         actionImage.height = 32;
-        console.log(actionKey);
-        
+
         const actionName = document.createElement("span");
         actionName.textContent = actionKey.replaceAll("_", " ");
         actionName.classList.add("action-name");
@@ -168,4 +170,18 @@ function calculateActions(skillKey, xpNeeded) {
 
         actionsContainer.appendChild(actionElement);
     }
+}
+
+function loadImage(imageElement, sources, fallback) {
+    const tryNext = (index) => {
+        if (index >= sources.length) {
+            imageElement.src = fallback;
+            return;
+        }
+
+        imageElement.onerror = () => tryNext(index + 1);
+        imageElement.src = sources[index];
+    };
+
+    tryNext(0);
 }
